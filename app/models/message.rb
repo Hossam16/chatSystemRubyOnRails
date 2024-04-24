@@ -1,0 +1,11 @@
+class Message < ApplicationRecord
+
+  # Associations
+  belongs_to :chat, counter_cache: :message_count, touch: true
+
+  # Validations
+  validates :number,
+            presence: true,
+            numericality: { only_integer: true, greater_than_or_equal_to: 1 },
+            uniqueness: { scope: :chat_id }
+end
