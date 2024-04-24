@@ -1,6 +1,6 @@
 class Chat < ApplicationRecord
     # Associations
-    belongs_to :application, counter_cache: :chat_count, touch: true
+    belongs_to :application, counter_cache: :chats_count, touch: true
     has_many :messages, dependent: :destroy
   
     # Validations
