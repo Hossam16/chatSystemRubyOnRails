@@ -1,33 +1,35 @@
 class ApplicationController < ApiController
+    include Response
+    
     before_action :set_application, only: [:show, :update, :destroy]
   
     # GET /applications
     def index
-      @applications = Application.all
-      render json: @applications
+        @applications = Application.all
+        success_response @applications
     end
   
     # GET /applications/:id
     def show
-      render json: @application
+        success_response @application
     end
   
     # POST /applications
     def create
       @application = Application.new(application_params)
       if @application.save
-        render json: @application, status: :created
+        success_response @application
       else
-        render json: @application.errors, status: :unprocessable_entity
+        faild_response @application.errors
       end
     end
   
     # PATCH/PUT /applications/:id
     def update
       if @application.update(application_params)
-        render json: @application
+        success_response @application
       else
-        render json: @application.errors, status: :unprocessable_entity
+        faild_response @application.errors
       end
     end
   

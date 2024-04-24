@@ -1,34 +1,36 @@
 class ChatController < ApiController
+    include Response
+
     before_action :set_application
     before_action :set_chat, only: [:show, :update, :destroy]
   
     # GET /applications/:application_token/chats
     def index
-      @chats = @application.chats
-      render json: @chats
+        @chats = @application.chats
+        success_response @chats
     end
   
     # GET /applications/:application_token/chats/:id
     def show
-      render json: @chat
+        success_response @chat
     end
   
     # POST /applications/:application_token/chats
     def create
       @chat = @application.chats.build(chat_params)
       if @chat.save
-        render json: @chat, status: :created
+        success_response @chat
       else
-        render json: @chat.errors, status: :unprocessable_entity
+        faild_response @chat.errors
       end
     end
   
     # PATCH/PUT /applications/:application_token/chats/:id
     def update
       if @chat.update(chat_params)
-        render json: @chat
+        success_response @chat
       else
-        render json: @chat.errors, status: :unprocessable_entity
+        faild_response @chat.errors
       end
     end
   
