@@ -6,7 +6,7 @@ FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
 
 # Rails app lives here
 WORKDIR /rails
-
+RUN echo ${DB_HOST}
 # Set production environment
 ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
@@ -19,7 +19,7 @@ FROM base as build
 
 # Install packages needed to build gems
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential default-libmysqlclient-dev git libvips pkg-config
+    apt-get install --no-install-recommends -y build-essential default-libmysqlclient-dev git libvips bash bash-completion libffi-dev tzdata pkg-config
 
 # Install application gems
 COPY Gemfile Gemfile.lock ./

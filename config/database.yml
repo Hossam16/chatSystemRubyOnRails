@@ -14,8 +14,8 @@ default: &default
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: root
-  password:
-  host: localhost
+  password: root
+  host: db
 
 development:
   <<: *default
@@ -51,5 +51,3 @@ test:
 production:
   <<: *default
   database: chat_system_ruby_on_rails_production
-  username: chat_system_ruby_on_rails
-  password: <%= ENV["CHAT_SYSTEM_RUBY_ON_RAILS_DATABASE_PASSWORD"] %>
