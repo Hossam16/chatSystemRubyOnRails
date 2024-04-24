@@ -1,35 +1,48 @@
 class ApplicationController < ApiController
-
-    include Render
-
-    # GET /application
+    before_action :set_application, only: [:show, :update, :destroy]
+  
+    # GET /applications
     def index
-        @applications = Application.all
-        render json: @applications
+      @applications = Application.all
+      render json: @applications
     end
-
-    # POST /application
-    def create
-        @application = Application.new(application_params)
-        @application.save
-        render_json @application
-    end
-
-    # PATCH/PUT /application/:id
-    def update
-        @application = Application.find_by!(access_token: params[:access_token])
-        @application.update(application_params)
-        render_json @application
-    end
-
-    # GET /application/:id
+  
+    # GET /applications/:id
     def show
-        @application = Application.find_by!(access_token: params[:access_token])
-        render_json @application
+      render json: @application
     end
-
+  
+    # POST /applications
+    def create
+      @application = Application.new(application_params)
+      if @application.save
+        render json: @application, status: :created
+      else
+        render json: @application.errors, status: :unprocessable_entity
+      end
+    end
+  
+    # PATCH/PUT /applications/:id
+    def update
+      if @application.update(application_params)
+        render json: @application
+      else
+        render json: @application.errors, status: :unprocessable_entity
+      end
+    end
+  
+    # DELETE /applications/:id
+    def destroy
+      @application.destroy
+    end
+  
     private
-    def application_params
+      def set_application
+        @application = Application.find_by!(access_token: params[:access_token])
+      end
+  
+      def application_params
         params.permit(:name)
-    end
+      end
 end
+  
