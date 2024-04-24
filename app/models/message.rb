@@ -1,11 +1,17 @@
 class Message < ApplicationRecord
-
   # Associations
-  belongs_to :chat, counter_cache: :message_count, touch: true
+  belongs_to :chat, counter_cache: :messages_count, touch: true
 
   # Validations
-  validates :number,
-            presence: true,
-            numericality: { only_integer: true, greater_than_or_equal_to: 1 },
-            uniqueness: { scope: :chat_id }
+  validates :body, presence: true
+
+  # Callback to set the message number before saving
+  before_validation :set_message_number, on: :create
+
+  private
+  def set_message_number
+    # Get the last message number for the chat and increment it by 1
+    last_number = self.chat.messages.maximum(:number) || 0
+    self.number = last_number + 1
+  end
 end
