@@ -26,8 +26,14 @@ gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
+gem 'elasticsearch-model'
+gem 'elasticsearch-rails'
+
 # Use Redis adapter to run Action Cable in production
-# gem "redis", ">= 4.0.1"
+gem "redis", ">= 4.0.1"
+gem 'redis-namespace'
+gem 'redis-rails', '~> 5.0', '>= 5.0.2'
+gem 'redis-rack-cache'
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -40,6 +46,11 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
+
+# Use Sidekiq as a job queuing backend
+gem 'sidekiq', '~> 5.0'
+gem 'sidekiq-scheduler'
+gem 'rb-inotify'
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"

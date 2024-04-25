@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   resources :application, param: :access_token, only: [:index, :show, :create, :update, :destroy] do
     resources :chat, param: :number, only: [:index, :show, :create, :update, :destroy] do
       resources :message, param: :number, only: [:index, :show, :create, :update, :destroy] do
-
+        collection do
+          get :search
+        end
       end
     end
   end

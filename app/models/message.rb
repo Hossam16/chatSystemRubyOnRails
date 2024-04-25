@@ -14,4 +14,6 @@ class Message < ApplicationRecord
     last_number = self.chat.messages.maximum(:number) || 0
     self.number = last_number + 1
   end
+
+  include Searchable
 end
