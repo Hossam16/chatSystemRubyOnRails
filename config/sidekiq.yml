@@ -1,0 +1,16 @@
+:queues:
+  - chat
+  - message
+  - index
+
+:scheduler:
+  :schedule:
+    RefreshIndexesWorker:
+      cron: "0 * * * * *"
+      class: RefreshIndexesWorker
+    MessageWorker:
+      cron: "0 * * * * *"
+      class: MessageWorker
+    ChatWorker:
+      cron: "0 * * * * *"
+      class: ChatWorker
