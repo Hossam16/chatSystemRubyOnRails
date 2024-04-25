@@ -45,7 +45,7 @@ class ChatController < ApiController
       end
   
       def set_chat
-        @chat = @application.find_by!(number: params[:number])
+        @chat = @application.chats.find_by!(number: params[:number])
       end
   
       def chat_params
