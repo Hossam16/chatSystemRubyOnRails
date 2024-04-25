@@ -1,6 +1,8 @@
 class MessageController < ApplicationController
     include Response
+    include Elasticsearch::Model
 
+    before_action :set_application
     before_action :set_chat
     before_action :set_message, only: [:show, :update, :destroy]
   
@@ -19,9 +21,9 @@ class MessageController < ApplicationController
     def create
       @message = @chat.messages.build(message_params)
       if @message.save
-        success_response @message, status: :created
+        success_response @message
       else
-        faild_response @message.errors, status: :unprocessable_entity
+        faild_response @message
       end
     end
   
@@ -30,7 +32,7 @@ class MessageController < ApplicationController
       if @message.update(message_params)
         success_response @message
       else
-        faild_response @message.errors, status: :unprocessable_entity
+        faild_response @message
       end
     end
   
@@ -38,10 +40,18 @@ class MessageController < ApplicationController
     def destroy
       @message.destroy
     end
+
+    def search
+      success_response  Message.__elasticsearch__.search('{"query": {"bool": {"filter": [{ "regexp": { "body": ".*'+ params[:keyword] +'.*"   }},{ "term": { "chat_id": "' + (@chat.id).to_s  + '" }}]}},"_source": {"includes": [ "body","number" ]}}')
+    end
   
     private
+      def set_application
+        @application = Application.find_by!(access_token: params[:application_access_token])
+      end
+
       def set_chat
-        @chat = Chat.find_by!(number: params[:chat_number])
+        @chat = @application.chats.find_by!(number: params[:chat_number])
       end
   
       def set_message
